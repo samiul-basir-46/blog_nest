@@ -1,3 +1,4 @@
+import 'package:blog_app/helper/routes.dart';
 import 'package:flutter/material.dart';
 
 import '../../../utils/colors.dart';
@@ -98,54 +99,64 @@ class ProfileScreen extends StatelessWidget {
                         ? size.height * 0.03
                         : size.height * 0.04,
                   ),
-                  Row(
-                    children: [
-                      Container(
-                        padding: EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                          color: AppColors.textFieldColor,
-                          borderRadius: BorderRadius.circular(10),
+                  InkWell(
+                    onTap: () {
+                      Navigator.pushNamed(context, AppRoute.editProfile);
+                    },
+                    child: Row(
+                      children: [
+                        Container(
+                          padding: EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            color: AppColors.textFieldColor,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Icon(Icons.edit_outlined, color: Colors.white),
                         ),
-                        child: Icon(Icons.edit_outlined, color: Colors.white),
-                      ),
-                      SizedBox(width: 15),
-                      Text(
-                        "Edit Profile",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: isLandscape
-                              ? size.width * 0.02
-                              : size.height * 0.019,
+                        SizedBox(width: 15),
+                        Text(
+                          "Edit Profile",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: isLandscape
+                                ? size.width * 0.02
+                                : size.height * 0.019,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                   SizedBox(
                     height: isLandscape
                         ? size.height * 0.04
                         : size.height * 0.02,
                   ),
-                  Row(
-                    children: [
-                      Container(
-                        padding: EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                          color: AppColors.textFieldColor,
-                          borderRadius: BorderRadius.circular(10),
+                  InkWell(
+                    onTap: () {
+                      Navigator.pushNamed(context, AppRoute.updatePassword);
+                    },
+                    child: Row(
+                      children: [
+                        Container(
+                          padding: EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            color: AppColors.textFieldColor,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Icon(Icons.lock, color: Colors.white),
                         ),
-                        child: Icon(Icons.lock, color: Colors.white),
-                      ),
-                      SizedBox(width: 15),
-                      Text(
-                        "Update Password",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: isLandscape
-                              ? size.width * 0.02
-                              : size.height * 0.019,
+                        SizedBox(width: 15),
+                        Text(
+                          "Update Password",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: isLandscape
+                                ? size.width * 0.02
+                                : size.height * 0.019,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ],
               ),

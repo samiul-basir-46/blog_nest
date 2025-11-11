@@ -31,7 +31,7 @@ class _NavBarViewState extends State<NavBarView> {
     return Scaffold(
       body: screen[currentIndex],
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: AppColors.primaryColor,
+        backgroundColor: AppColors.textFieldColor,
         type: BottomNavigationBarType.fixed,
         selectedItemColor: Colors.white,
         unselectedItemColor: Colors.grey,

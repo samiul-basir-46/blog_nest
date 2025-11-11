@@ -1,3 +1,4 @@
+import 'package:blog_app/helper/routes.dart';
 import 'package:blog_app/widget/custom_text_field.dart';
 import 'package:flutter/material.dart';
 
@@ -58,54 +59,59 @@ class BookmarkScreen extends StatelessWidget {
                   itemBuilder: (context, index) {
                     return Padding(
                       padding: const EdgeInsets.symmetric(vertical: 20),
-                      child: Row(
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.pushNamed(context, AppRoute.blogDetails);
+                        },
+                        child: Row(
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Image.asset(
+                                "assets/images/onboard.png",
+                                height: isLandscape
+                                    ? size.height * 0.25
+                                    : size.height * 0.07,
+                                width: isLandscape
+                                    ? size.width * 0.22
+                                    : size.width * 0.3,
+                                fit: BoxFit.cover,
+                              ),
                             ),
-                            child: Image.asset(
-                              "assets/images/onboard.png",
-                              height: isLandscape
-                                  ? size.height * 0.25
-                                  : size.height * 0.07,
-                              width: isLandscape
-                                  ? size.width * 0.22
-                                  : size.width * 0.3,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                          SizedBox(width: 20),
-                          Flexible(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "SEO Strategies for Beginners",
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 1,
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: isLandscape
-                                        ? size.width * 0.03
-                                        : size.height * 0.02,
+                            SizedBox(width: 20),
+                            Flexible(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "SEO Strategies for Beginners",
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 1,
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: isLandscape
+                                          ? size.width * 0.03
+                                          : size.height * 0.02,
+                                    ),
                                   ),
-                                ),
-                                Text(
-                                  "A comprehensive guide to understanding and implementing",
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 2,
-                                  style: TextStyle(
-                                    color: Colors.grey,
-                                    fontSize: isLandscape
-                                        ? size.width * 0.023
-                                        : size.height * 0.015,
+                                  Text(
+                                    "A comprehensive guide to understanding and implementing",
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 2,
+                                    style: TextStyle(
+                                      color: Colors.grey,
+                                      fontSize: isLandscape
+                                          ? size.width * 0.023
+                                          : size.height * 0.015,
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     );
                   },
