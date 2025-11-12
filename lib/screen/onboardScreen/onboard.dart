@@ -1,15 +1,19 @@
 import 'package:blog_app/helper/routes.dart';
+import 'package:blog_app/provider/onboard_provider.dart';
 import 'package:blog_app/widget/custom_button.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class SplashScreen extends StatelessWidget {
-  const SplashScreen({super.key});
+class OnboardScreen extends StatelessWidget {
+  const OnboardScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final isLandscape =
         MediaQuery.of(context).orientation == Orientation.landscape;
+
+    final onboardProvider = Provider.of<OnboardProvider>(context);
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -20,6 +24,13 @@ class SplashScreen extends StatelessWidget {
               Image.asset(
                 "assets/images/onboard.png",
                 width: isLandscape ? size.width * 0.6 : double.infinity,
+                errorBuilder: (context, error, stackTrace) {
+                  return Image.network(
+                    "https://img.icons8.com/?size=50&id=j1UxMbqzPi7n&format=png",
+                    color: Colors.white,
+                    width: isLandscape ? size.width * 0.6 : double.infinity,
+                  );
+                },
               ),
               SizedBox(height: size.height * 0.02),
               Padding(
@@ -58,7 +69,8 @@ class SplashScreen extends StatelessWidget {
                       title: "Get Started",
                       font: 'FontMain',
                       onTap: () {
-                        Navigator.pushNamed(context, AppRoute.login);
+                        onboardProvider.onboardComplete();
+                        Navigator.pushReplacementNamed(context, AppRoute.login);
                       },
                     ),
                   ],

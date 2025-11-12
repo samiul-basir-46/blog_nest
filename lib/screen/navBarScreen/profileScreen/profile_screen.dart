@@ -1,4 +1,5 @@
 import 'package:blog_app/helper/routes.dart';
+import 'package:blog_app/widget/custom_button.dart';
 import 'package:flutter/material.dart';
 
 import '../../../utils/colors.dart';
@@ -157,6 +158,18 @@ class ProfileScreen extends StatelessWidget {
                         ),
                       ],
                     ),
+                  ),
+                  SizedBox(
+                    height: isLandscape
+                        ? size.height * 0.07
+                        : size.height * 0.25,
+                  ),
+                  CustomButton(
+                    title: "Log out",
+                    color: AppColors.textFieldColor,
+                    onTap: () {
+                      Navigator.pushNamed(context, AppRoute.login);
+                    },
                   ),
                 ],
               ),

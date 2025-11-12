@@ -6,8 +6,9 @@ class CustomButton extends StatelessWidget {
   final void Function()? onTap;
   final String title;
   final String? font;
+  final Color? color;
 
-  const CustomButton({super.key, this.onTap, required this.title, this.font});
+  const CustomButton({super.key, this.onTap, required this.title, this.font, this.color});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +22,7 @@ class CustomButton extends StatelessWidget {
         height: isLandscape ? size.width * 0.06 : size.height * 0.06,
         width: isLandscape ? size.width * 0.6 : double.infinity,
         decoration: BoxDecoration(
-          color: AppColors.buttonColor,
+          color: color ?? AppColors.buttonColor,
           borderRadius: BorderRadius.circular(15),
         ),
         child: Center(

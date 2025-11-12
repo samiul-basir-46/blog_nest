@@ -7,6 +7,8 @@ import 'package:blog_app/screen/onboardScreen/onboard.dart';
 import 'package:blog_app/screen/signUpScreen/sign_up_screen.dart';
 import 'package:flutter/cupertino.dart';
 
+import '../screen/splashScreen/splash_screen.dart';
+
 class AppRoute {
   static const String onboard = '/';
   static const String login = '/login';
@@ -15,15 +17,17 @@ class AppRoute {
   static const String blogDetails = '/blogDetails';
   static const String updatePassword = '/updatePassword';
   static const String editProfile = '/editProfile';
+  static const String splash = '/splash';
 
   static Map<String, WidgetBuilder> routes = {
-    onboard : (context) => const SplashScreen(),
+    onboard : (context) => const OnboardScreen(),
     login : (context) => const LoginScreen(),
     signUp : (context) => const SignUpScreen(),
     navView : (context) => NavBarView(),
     blogDetails : (context) => BlogDetails(),
     updatePassword : (context) => UpdatePasswordScreen(),
     editProfile : (context) => EditProfileScreen(),
+    splash : (context) => SplashScreen(),
   };
 
 }

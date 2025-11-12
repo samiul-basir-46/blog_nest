@@ -78,6 +78,18 @@ class BookmarkScreen extends StatelessWidget {
                                     ? size.width * 0.22
                                     : size.width * 0.3,
                                 fit: BoxFit.cover,
+                                errorBuilder: (context, error, stackTrace) {
+                                  return Image.network(
+                                    "https://img.icons8.com/?size=50&id=j1UxMbqzPi7n&format=png",
+                                    color: Colors.white,
+                                    height: isLandscape
+                                        ? size.height * 0.25
+                                        : size.height * 0.07,
+                                    width: isLandscape
+                                        ? size.width * 0.22
+                                        : size.width * 0.3,
+                                  );
+                                },
                               ),
                             ),
                             SizedBox(width: 20),

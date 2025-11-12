@@ -87,6 +87,15 @@ class BlogScreen extends StatelessWidget {
                             height: isLandscape
                                 ? size.height * 0.3
                                 : size.height * 0.15,
+                            errorBuilder: (context, error, stackTrace) {
+                              return Image.network(
+                                "https://img.icons8.com/?size=50&id=j1UxMbqzPi7n&format=png",
+                                color: Colors.white,
+                                height: isLandscape
+                                    ? size.height * 0.3
+                                    : size.height * 0.15,
+                              );
+                            },
                           ),
                         ),
                       ),
