@@ -38,6 +38,8 @@ dependencies:
   device_preview:
   get_storage:
   provider:
+  http:
+  email_validator:
 
 dev_dependencies:
   flutter_test:

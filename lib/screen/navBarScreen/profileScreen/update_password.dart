@@ -53,6 +53,7 @@ class UpdatePasswordScreen extends StatelessWidget {
                         : size.height * 0.01,
                   ),
                   CustomTextField(
+                    obsText: false,
                     hinText: "Enter your current password",
                     width: isLandscape ? size.width * 0.6 : double.infinity,
                   ),
@@ -68,6 +69,7 @@ class UpdatePasswordScreen extends StatelessWidget {
                         : size.height * 0.01,
                   ),
                   CustomTextField(
+                    obsText: false,
                     hinText: "Enter your new password",
                     width: isLandscape ? size.width * 0.6 : double.infinity,
                   ),
@@ -83,6 +85,7 @@ class UpdatePasswordScreen extends StatelessWidget {
                         : size.height * 0.01,
                   ),
                   CustomTextField(
+                    obsText: false,
                     hinText: "Confirm your new password",
                     width: isLandscape ? size.width * 0.6 : double.infinity,
                   ),

@@ -108,6 +108,7 @@ class EditProfileScreen extends StatelessWidget {
                             : size.height * 0.01,
                       ),
                       CustomTextField(
+                        obsText: false,
                         hinText: "Ethan Carter",
                         width: isLandscape ? size.width * 0.6 : double.infinity,
                       ),
@@ -129,6 +130,7 @@ class EditProfileScreen extends StatelessWidget {
                             : size.height * 0.01,
                       ),
                       CustomTextField(
+                        obsText: false,
                         hinText: "ethan.carter@gmail.com",
                         width: isLandscape ? size.width * 0.6 : double.infinity,
                       ),

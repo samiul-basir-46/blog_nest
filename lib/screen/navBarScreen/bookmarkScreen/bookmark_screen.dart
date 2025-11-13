@@ -46,6 +46,7 @@ class BookmarkScreen extends StatelessWidget {
                 height: isLandscape ? size.height * 0.03 : size.height * 0.02,
               ),
               CustomTextField(
+                obsText: false,
                 hinText: "Search Bookmarks",
                 prefixIcon: Icon(Icons.search, color: AppColors.hintColor),
                 width: isLandscape ? size.width * 0.6 : double.infinity,

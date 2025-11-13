@@ -70,7 +70,11 @@ class OnboardScreen extends StatelessWidget {
                       font: 'FontMain',
                       onTap: () {
                         onboardProvider.onboardComplete();
-                        Navigator.pushReplacementNamed(context, AppRoute.login);
+                        Navigator.pushNamedAndRemoveUntil(
+                          context,
+                          AppRoute.login,
+                          (route) => false,
+                        );
                       },
                     ),
                   ],

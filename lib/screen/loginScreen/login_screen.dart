@@ -1,14 +1,40 @@
+import 'package:blog_app/helper/auth_api.dart';
 import 'package:blog_app/helper/routes.dart';
+import 'package:blog_app/provider/toggle_provider.dart';
 import 'package:blog_app/utils/colors.dart';
 import 'package:blog_app/widget/custom_button.dart';
 import 'package:blog_app/widget/custom_text_field.dart';
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:provider/provider.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
   @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  final formKey = GlobalKey<FormState>();
+
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final toggleProvider = Provider.of<ToggleProvider>(context);
+    final authProvider = Provider.of<AuthApiServices>(context);
+
     final size = MediaQuery.of(context).size;
     final isLandscape =
         MediaQuery.of(context).orientation == Orientation.landscape;
@@ -19,16 +45,7 @@ class LoginScreen extends StatelessWidget {
         elevation: 0,
         scrolledUnderElevation: 0,
         centerTitle: true,
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          icon: Icon(
-            Icons.arrow_back_ios_new,
-            color: Colors.white,
-            size: isLandscape ? size.width * 0.03 : size.height * 0.02,
-          ),
-        ),
+        automaticallyImplyLeading: false,
         title: Text(
           "Sign in",
           style: TextStyle(
@@ -63,28 +80,112 @@ class LoginScreen extends StatelessWidget {
                 SizedBox(
                   height: isLandscape ? size.height * 0.07 : size.height * 0.03,
                 ),
-                CustomTextField(
-                  hinText: 'Email',
-                  width: isLandscape ? size.width * 0.6 : double.infinity,
-                ),
-                SizedBox(
-                  height: isLandscape ? size.height * 0.07 : size.height * 0.03,
-                ),
-                CustomTextField(
-                  hinText: 'Password',
-                  width: isLandscape ? size.width * 0.6 : double.infinity,
+                Form(
+                  key: formKey,
+                  child: Column(
+                    children: [
+                      CustomTextField(
+                        obsText: false,
+                        controller: emailController,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Please enter your email";
+                          }
+                          if (!EmailValidator.validate(value)) {
+                            return "Enter a valid email";
+                          }
+                          return null;
+                        },
+                        hinText: 'Email',
+                        width: isLandscape ? size.width * 0.6 : double.infinity,
+                      ),
+                      SizedBox(
+                        height: isLandscape
+                            ? size.height * 0.07
+                            : size.height * 0.03,
+                      ),
+                      CustomTextField(
+                        obsText: toggleProvider.togglePasswordSignIn,
+                        hinText: 'Password',
+                        controller: passwordController,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Please enter your password";
+                          }
+                          return null;
+                        },
+                        suffixIcon: IconButton(
+                          onPressed: () {
+                            toggleProvider.togglePassSignIn();
+                          },
+                          icon: Icon(
+                            toggleProvider.togglePasswordSignIn
+                                ? Icons.visibility_off
+                                : Icons.visibility,
+                            color: Colors.grey,
+                          ),
+                        ),
+                        width: isLandscape ? size.width * 0.6 : double.infinity,
+                      ),
+                    ],
+                  ),
                 ),
                 SizedBox(
                   height: isLandscape ? size.height * 0.12 : size.height * 0.08,
                 ),
-                CustomButton(
-                  title: "Sign in",
-                  onTap: () {
-                    Navigator.pushNamed(context, AppRoute.navView);
-                  },
-                ),
+                authProvider.isLoading
+                    ? Center(
+                        child: CircularProgressIndicator(color: Colors.white),
+                      )
+                    : CustomButton(
+                        title: "Sign in",
+                        onTap: () async {
+                          if (formKey.currentState!.validate()) {
+                            final success = await authProvider.loginFetch(
+                              emailController.text,
+                              passwordController.text,
+                            );
+                            if (success) {
+                              if (!context.mounted) return;
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Center(
+                                    child: Text(
+                                      "Login Successful",
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                  ),
+                                  backgroundColor: Colors.green,
+                                  behavior: SnackBarBehavior.floating,
+                                  duration: Duration(seconds: 1),
+                                ),
+                              );
+                              await Future.delayed(Duration(seconds: 1), () {
+                                if (!context.mounted) return;
+                                Navigator.pushReplacementNamed(
+                                  context,
+                                  AppRoute.navView,
+                                );
+                              });
+                            } else {
+                              if (!context.mounted) return;
+                              showDialog(context: context, builder: (context) {
+                                return AlertDialog(
+                                  title: Text("Login Failed"),
+                                  content: Text("Incorrect email or password"),
+                                  actions: [
+                                    TextButton(onPressed: () {
+                                      Navigator.pop(context);
+                                    }, child: Text("Ok"))
+                                  ],
+                                );
+                              },);
+                            }
+                          }
+                        },
+                      ),
                 SizedBox(
-                  height: isLandscape ? size.height * 0.07 : size.height * 0.4,
+                  height: isLandscape ? size.height * 0.07 : size.height * 0.35,
                 ),
                 Column(
                   children: [

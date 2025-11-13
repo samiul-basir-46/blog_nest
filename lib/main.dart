@@ -1,5 +1,10 @@
+import 'dart:io';
+
+import 'package:blog_app/helper/auth_api.dart';
+import 'package:blog_app/helper/get_api.dart';
 import 'package:blog_app/helper/routes.dart';
 import 'package:blog_app/provider/onboard_provider.dart';
+import 'package:blog_app/provider/toggle_provider.dart';
 import 'package:blog_app/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:device_preview/device_preview.dart';
@@ -7,12 +12,16 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:provider/provider.dart';
 
+
 void main() async {
   await GetStorage.init();
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => OnboardProvider()),
+        ChangeNotifierProvider(create: (context) => AuthApiServices()),
+        ChangeNotifierProvider(create: (context) => ToggleProvider()),
+        ChangeNotifierProvider(create: (context) => GetPost()),
       ],
       child: MyApp(),
     ),
