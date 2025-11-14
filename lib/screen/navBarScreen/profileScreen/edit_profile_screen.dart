@@ -264,7 +264,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
                               await Future.delayed(Duration(seconds: 1), () {
                                 if (!context.mounted) return;
-                                Navigator.pop(context);
+                                Navigator.pushReplacementNamed(
+                                  context,
+                                  AppRoute.navView[2],
+                                );
                               });
                             } else {
                               if (!context.mounted) return;
