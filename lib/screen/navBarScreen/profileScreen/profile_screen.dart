@@ -1,17 +1,41 @@
+import 'package:blog_app/helper/auth_api.dart';
+import 'package:blog_app/helper/get_api.dart';
 import 'package:blog_app/helper/routes.dart';
 import 'package:blog_app/widget/custom_button.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../../utils/colors.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
 
   @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    final profileProvider = Provider.of<GetPost>(context, listen: false);
+    profileProvider.fetchProfile();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
+    final size = MediaQuery
+        .of(context)
+        .size;
     final isLandscape =
-        MediaQuery.of(context).orientation == Orientation.landscape;
+        MediaQuery
+            .of(context)
+            .orientation == Orientation.landscape;
+
+    final profileProvider = Provider.of<GetPost>(context);
+    final authProvider = Provider.of<AuthApiServices>(context);
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColors.primaryColor,
@@ -50,50 +74,114 @@ class ProfileScreen extends StatelessWidget {
                         ? size.height * 0.03
                         : size.height * 0.02,
                   ),
-                  Container(
-                    height: isLandscape
-                        ? size.height * 0.25
-                        : size.height * 0.14,
-                    width: isLandscape ? size.width * 0.2 : size.width * 0.4,
-                    decoration: BoxDecoration(
-                      color: Colors.grey,
-                      shape: BoxShape.circle,
-                      image: DecorationImage(
-                        image: AssetImage("assets/images/avatar.png"),
+                  (profileProvider.isLoading || profileProvider.profile == null)
+                      ? Column(
+                    children: [
+                      Container(
+                        height: isLandscape
+                            ? size.height * 0.25
+                            : size.height * 0.14,
+                        width: isLandscape
+                            ? size.width * 0.2
+                            : size.width * 0.4,
+                        decoration: BoxDecoration(
+                          color: Colors.grey,
+                          shape: BoxShape.circle,
+                          image: DecorationImage(
+                            image: AssetImage("assets/images/avatar.png"),
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: isLandscape
-                        ? size.height * 0.03
-                        : size.height * 0.02,
-                  ),
-                  Text(
-                    "Ethan Carter",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: isLandscape
-                          ? size.width * 0.03
-                          : size.height * 0.024,
-                    ),
-                  ),
-                  Text(
-                    "ethan.carter@gmail.com",
-                    style: TextStyle(
-                      color: Colors.grey,
-                      fontSize: isLandscape
-                          ? size.width * 0.02
-                          : size.height * 0.019,
-                    ),
-                  ),
-                  Text(
-                    "01408911454",
-                    style: TextStyle(
-                      color: Colors.grey,
-                      fontSize: isLandscape
-                          ? size.width * 0.02
-                          : size.height * 0.019,
-                    ),
+                      SizedBox(
+                        height: isLandscape
+                            ? size.height * 0.03
+                            : size.height * 0.02,
+                      ),
+                      Text(
+                        ".......",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: isLandscape
+                              ? size.width * 0.03
+                              : size.height * 0.024,
+                        ),
+                      ),
+                      Text(
+                        ".......@gmail.com",
+                        style: TextStyle(
+                          color: Colors.grey,
+                          fontSize: isLandscape
+                              ? size.width * 0.02
+                              : size.height * 0.019,
+                        ),
+                      ),
+                      Text(
+                        "01.........",
+                        style: TextStyle(
+                          color: Colors.grey,
+                          fontSize: isLandscape
+                              ? size.width * 0.02
+                              : size.height * 0.019,
+                        ),
+                      ),
+                    ],
+                  )
+                      : Column(
+                    children: [
+                      Container(
+                        height: isLandscape
+                            ? size.height * 0.25
+                            : size.height * 0.14,
+                        width: isLandscape
+                            ? size.width * 0.2
+                            : size.width * 0.4,
+                        decoration: BoxDecoration(
+                          color: Colors.grey,
+                          shape: BoxShape.circle,
+                          image: DecorationImage(
+                            image: AssetImage("assets/images/avatar.png"),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: isLandscape
+                            ? size.height * 0.03
+                            : size.height * 0.02,
+                      ),
+                      Text(
+                        profileProvider.isLoading
+                            ? "......."
+                            : profileProvider.profile!.name,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: isLandscape
+                              ? size.width * 0.03
+                              : size.height * 0.024,
+                        ),
+                      ),
+                      Text(
+                        profileProvider.isLoading
+                            ? ".......@gmail.com"
+                            : profileProvider.profile!.email,
+                        style: TextStyle(
+                          color: Colors.grey,
+                          fontSize: isLandscape
+                              ? size.width * 0.02
+                              : size.height * 0.019,
+                        ),
+                      ),
+                      Text(
+                        profileProvider.isLoading
+                            ? "01........."
+                            : profileProvider.profile!.phone,
+                        style: TextStyle(
+                          color: Colors.grey,
+                          fontSize: isLandscape
+                              ? size.width * 0.02
+                              : size.height * 0.019,
+                        ),
+                      ),
+                    ],
                   ),
                   SizedBox(
                     height: isLandscape
@@ -168,6 +256,7 @@ class ProfileScreen extends StatelessWidget {
                     title: "Log out",
                     color: AppColors.textFieldColor,
                     onTap: () {
+                      authProvider.logOut();
                       Navigator.pushNamed(context, AppRoute.login);
                     },
                   ),

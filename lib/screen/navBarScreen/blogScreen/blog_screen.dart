@@ -4,18 +4,28 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../utils/colors.dart';
 
-class BlogScreen extends StatelessWidget {
+class BlogScreen extends StatefulWidget {
   const BlogScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  State<BlogScreen> createState() => _BlogScreenState();
+}
+
+class _BlogScreenState extends State<BlogScreen> {
+  void initState() {
+    super.initState();
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final getProvider = Provider.of<GetPost>(context, listen: false);
+
       if (getProvider.blogs.isEmpty) {
-        getProvider.fetchPost();
+        getProvider.fetchPost(); // ⭐ এখন আর error দেবে না
       }
     });
+  }
 
+  @override
+  Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final isLandscape =
         MediaQuery.of(context).orientation == Orientation.landscape;
@@ -25,6 +35,7 @@ class BlogScreen extends StatelessWidget {
         backgroundColor: AppColors.primaryColor,
         elevation: 0,
         automaticallyImplyLeading: false,
+        scrolledUnderElevation: 0,
         centerTitle: true,
         title: Text(
           "Blog",
@@ -80,10 +91,14 @@ class BlogScreen extends StatelessWidget {
                                   blog.categories.isNotEmpty
                                       ? blog.categories[0]
                                       : '',
-                                  style: const TextStyle(color: Color(0xFF9EA6BA)),
+                                  style: const TextStyle(
+                                    color: Color(0xFF9EA6BA),
+                                  ),
                                 ),
                                 Text(
                                   blog.title,
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 2,
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontSize: isLandscape
@@ -93,11 +108,16 @@ class BlogScreen extends StatelessWidget {
                                 ),
                                 Text(
                                   blog.excerpt,
-                                  style: const TextStyle(color: Color(0xFF9EA6BA)),
+                                  maxLines: 3,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(
+                                    color: Color(0xFF9EA6BA),
+                                  ),
                                 ),
                               ],
                             ),
                           ),
+                          SizedBox(width: 10),
                           Flexible(
                             child: Image.network(
                               blog.image,
