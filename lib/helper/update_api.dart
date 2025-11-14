@@ -46,4 +46,44 @@ class UpdateApiServices with ChangeNotifier {
     notifyListeners();
     return false;
   }
+
+  Future<bool> fetchChangePass(String oldPass, String newPass) async {
+    isLoading = true;
+
+    notifyListeners();
+
+    token = box.read('isLoggedIn');
+
+    final uri = Uri.parse(
+      "https://api.zhndev.site/wp-json/blog-app/v1/user/change-password",
+    );
+
+    try {
+      final response = await http.post(
+        uri,
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode({
+          'current_password': oldPass,
+          'new_password': newPass,
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        isLoading = false;
+        notifyListeners();
+        return true;
+      } else {
+        errorMessage = "Password update failed";
+      }
+    } catch (e) {
+      errorMessage = e.toString();
+    }
+
+    isLoading = false;
+    notifyListeners();
+    return false;
+  }
 }

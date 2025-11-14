@@ -1,12 +1,35 @@
+import 'dart:math';
+
+import 'package:blog_app/helper/get_api.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../utils/colors.dart';
 
-class BlogDetails extends StatelessWidget {
-  const BlogDetails({super.key});
+class BlogDetails extends StatefulWidget {
+  final int blogId;
+
+  const BlogDetails({super.key, required this.blogId});
+
+  @override
+  State<BlogDetails> createState() => _BlogDetailsState();
+}
+
+class _BlogDetailsState extends State<BlogDetails> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final provider = Provider.of<GetPost>(context, listen: false);
+      provider.fetchSingleBlog(widget.blogId);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    final singleProvider = Provider.of<GetPost>(context);
+
     final size = MediaQuery.of(context).size;
     final isLandscape =
         MediaQuery.of(context).orientation == Orientation.landscape;
@@ -39,137 +62,165 @@ class BlogDetails extends StatelessWidget {
           ),
         ),
       ),
-      body: SingleChildScrollView(
-        child: SafeArea(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Container(
-                height: isLandscape ? size.height * 0.6 : size.height * 0.4,
-                width: isLandscape ? size.width * 0.6 : double.infinity,
-                decoration: BoxDecoration(color: Colors.white),
+      body: singleProvider.isLoading
+          ? Center(child: CircularProgressIndicator(color: Colors.white))
+          : singleProvider.singleBlog == null
+          ? Center(
+              child: Text(
+                "No data fount!",
+                style: TextStyle(color: Colors.white),
               ),
-              SizedBox(
-                height: isLandscape ? size.height * 0.03 : size.height * 0.01,
-              ),
-              Center(
-                child: Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "SEO Strategies for Beginners",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontFamily: 'FontMain',
-                          fontSize: isLandscape
-                              ? size.width * 0.03
-                              : size.height * 0.026,
+            )
+          : SingleChildScrollView(
+              child: SafeArea(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Container(
+                      height: isLandscape
+                          ? size.height * 0.6
+                          : size.height * 0.4,
+                      width: isLandscape ? size.width * 0.6 : double.infinity,
+                      decoration: BoxDecoration(color: Colors.white),
+                      child: Center(
+                        child: Image.network(
+                          singleProvider.singleBlog!.image ??
+                              "https://img.icons8.com/?size=50&id=j1UxMbqzPi7n&format=png",
+                          fit: BoxFit.fill,
                         ),
                       ),
-                      SizedBox(
-                        height: isLandscape
-                            ? size.height * 0.03
-                            : size.height * 0.02,
-                      ),
-                      ListTile(
-                        leading: CircleAvatar(),
-                        minLeadingWidth: 0,
-                        contentPadding: EdgeInsets.all(0),
-                        title: Text(
-                          "Author",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontFamily: 'FontMain',
-                            fontSize: isLandscape
-                                ? size.width * 0.03
-                                : size.height * 0.02,
-                          ),
-                        ),
-                        subtitle: Text(
-                          "Olivia Harper",
-                          style: TextStyle(
-                            color: Colors.grey,
-                            fontFamily: 'FontMain',
-                            fontSize: isLandscape
-                                ? size.width * 0.03
-                                : size.height * 0.018,
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: isLandscape
-                            ? size.height * 0.03
-                            : size.height * 0.01,
-                      ),
-                      Text(
-                        "In a world increasingly aware of its environmental footprint, the concept of sustainable living has moved from a niche lifestyle to a mainstream necessity. This article explores the innovative approaches and technologies that are shaping a greener future, from renewable energy solutions to eco-friendly consumer products.",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontFamily: 'FontMain',
-                          fontSize: isLandscape
-                              ? size.width * 0.025
-                              : size.height * 0.018,
-                        ),
-                      ),
-                      SizedBox(
-                        height: isLandscape
-                            ? size.height * 0.03
-                            : size.height * 0.015,
-                      ),
-                      Row(
-                        children: [
-                          IconButton(
-                            onPressed: () {},
-                            icon: Icon(Icons.favorite_border),
-                          ),
-                          SizedBox(width: 7),
-                          Text(
-                            "123",
-                            style: TextStyle(
-                              color: Colors.grey,
-                              fontFamily: 'FontMain',
+                    ),
+                    SizedBox(
+                      height: isLandscape
+                          ? size.height * 0.03
+                          : size.height * 0.01,
+                    ),
+                    Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              singleProvider.singleBlog!.title,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontFamily: 'FontMain',
+                                fontSize: isLandscape
+                                    ? size.width * 0.03
+                                    : size.height * 0.026,
+                              ),
                             ),
-                          ),
-                          SizedBox(width: 40),
-                          IconButton(
-                            onPressed: () {},
-                            icon: Icon(Icons.comment),
-                          ),
-                          SizedBox(width: 7),
-                          Text(
-                            "45",
-                            style: TextStyle(
-                              color: Colors.grey,
-                              fontFamily: 'FontMain',
+                            SizedBox(
+                              height: isLandscape
+                                  ? size.height * 0.03
+                                  : size.height * 0.02,
                             ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: isLandscape
-                            ? size.height * 0.03
-                            : size.height * 0.01,
-                      ),
-                      Text(
-                        "Comments",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontFamily: 'FontMain',
-                          fontSize: isLandscape
-                              ? size.width * 0.025
-                              : size.height * 0.02,
+                            ListTile(
+                              leading: CircleAvatar(
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(100),
+                                  child: Image.network(
+                                    singleProvider.singleBlog!.avatar,
+                                  ),
+                                ),
+                              ),
+                              minLeadingWidth: 0,
+                              contentPadding: EdgeInsets.all(0),
+                              title: Text(
+                                singleProvider.singleBlog!.name,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontFamily: 'FontMain',
+                                  fontSize: isLandscape
+                                      ? size.width * 0.03
+                                      : size.height * 0.02,
+                                ),
+                              ),
+                              // subtitle: Text(
+                              //   singleProvider.singleBlog!.bio,
+                              //   style: TextStyle(
+                              //     color: Colors.grey,
+                              //     fontFamily: 'FontMain',
+                              //     fontSize: isLandscape
+                              //         ? size.width * 0.03
+                              //         : size.height * 0.018,
+                              //   ),
+                              // ),
+                            ),
+                            SizedBox(
+                              height: isLandscape
+                                  ? size.height * 0.03
+                                  : size.height * 0.01,
+                            ),
+                            Text(
+                              singleProvider.singleBlog!.content,
+                              textAlign: TextAlign.justify,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontFamily: 'FontMain',
+                                fontSize: isLandscape
+                                    ? size.width * 0.025
+                                    : size.height * 0.018,
+                              ),
+                            ),
+                            SizedBox(
+                              height: isLandscape
+                                  ? size.height * 0.03
+                                  : size.height * 0.015,
+                            ),
+                            Row(
+                              children: [
+                                IconButton(
+                                  onPressed: () {},
+                                  icon: Icon(Icons.favorite_border),
+                                ),
+                                SizedBox(width: 7),
+                                Text(
+                                  singleProvider.singleBlog!.likeCount,
+                                  style: TextStyle(
+                                    color: Colors.grey,
+                                    fontFamily: 'FontMain',
+                                  ),
+                                ),
+                                SizedBox(width: 40),
+                                IconButton(
+                                  onPressed: () {},
+                                  icon: Icon(Icons.comment),
+                                ),
+                                SizedBox(width: 7),
+                                Text(
+                                  singleProvider.singleBlog!.commentCount,
+                                  style: TextStyle(
+                                    color: Colors.grey,
+                                    fontFamily: 'FontMain',
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: isLandscape
+                                  ? size.height * 0.03
+                                  : size.height * 0.01,
+                            ),
+                            Text(
+                              "Comments",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontFamily: 'FontMain',
+                                fontSize: isLandscape
+                                    ? size.width * 0.025
+                                    : size.height * 0.02,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
-            ],
-          ),
-        ),
-      ),
+            ),
     );
   }
 }

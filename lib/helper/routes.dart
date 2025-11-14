@@ -24,7 +24,10 @@ class AppRoute {
     login : (context) => const LoginScreen(),
     signUp : (context) => const SignUpScreen(),
     navView : (context) => NavBarView(),
-    blogDetails : (context) => BlogDetails(),
+    blogDetails : (context) {
+      final blogId = ModalRoute.of(context)!.settings.arguments as int;
+      return BlogDetails(blogId: blogId,);
+    },
     updatePassword : (context) => UpdatePasswordScreen(),
     editProfile : (context) => EditProfileScreen(),
     splash : (context) => SplashScreen(),

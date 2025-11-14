@@ -25,4 +25,23 @@ class ToggleProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  bool oldPass = true;
+  void toggleOldPass() {
+    oldPass = !oldPass;
+    notifyListeners();
+  }
+
+  bool newPass = true;
+  void toggleNewPass() {
+    newPass = !newPass;
+    notifyListeners();
+  }
+
+  bool confirmPass = true;
+  void toggleConfirmPass() {
+    confirmPass = !confirmPass;
+    notifyListeners();
+  }
+
+
 }

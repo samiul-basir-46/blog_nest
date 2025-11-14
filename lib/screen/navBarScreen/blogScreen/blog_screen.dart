@@ -12,6 +12,7 @@ class BlogScreen extends StatefulWidget {
 }
 
 class _BlogScreenState extends State<BlogScreen> {
+  @override
   void initState() {
     super.initState();
 
@@ -19,7 +20,7 @@ class _BlogScreenState extends State<BlogScreen> {
       final getProvider = Provider.of<GetPost>(context, listen: false);
 
       if (getProvider.blogs.isEmpty) {
-        getProvider.fetchPost(); // ⭐ এখন আর error দেবে না
+        getProvider.fetchPost();
       }
     });
   }
@@ -78,7 +79,11 @@ class _BlogScreenState extends State<BlogScreen> {
                     padding: const EdgeInsets.symmetric(vertical: 10),
                     child: InkWell(
                       onTap: () {
-                        Navigator.pushNamed(context, AppRoute.blogDetails);
+                        Navigator.pushNamed(
+                          context,
+                          AppRoute.blogDetails,
+                          arguments: blog.id,
+                        );
                       },
                       child: Row(
                         children: [
